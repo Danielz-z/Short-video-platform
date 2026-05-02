@@ -68,6 +68,10 @@ Core tables:
 
 Supporting tables include `fields`, `tags`, `video_tags`, `follows`, and `messages` to preserve the original platform features.
 
+## Route Reference
+
+See [docs/api.md](docs/api.md) for the Flask route reference, route-layer mapping, and benchmark command entry points.
+
 ## Performance Optimization
 
 The key indexes are defined in `database/indexes.sql`:
