@@ -12,9 +12,25 @@ An engineering-style Flask + MySQL short video platform. The project demonstrate
 - MySQL schema, index, procedure, and seed scripts
 - Concurrent insert/query benchmark scripts with QPS, average latency, and P95 latency output
 
-## Architecture
+## Project Diagrams
 
-![System architecture](docs/assets/architecture.png)
+### System Architecture
+
+<p align="center">
+  <img src="docs/assets/architecture.png" alt="Short Video Platform system architecture" width="900">
+</p>
+
+The architecture diagram shows the layered Flask backend, MySQL data model, database scripts, and the independent performance experiment workflow.
+
+### Database Performance Experiment
+
+<p align="center">
+  <img src="docs/assets/performance-results.png" alt="Database performance experiment comparison" width="900">
+</p>
+
+The performance diagram summarizes the intended comparison format for index experiments: query latency and QPS before and after adding indexes.
+
+## Architecture
 
 ```text
 backend/
@@ -53,8 +69,6 @@ CREATE INDEX idx_videos_upload_time ON videos(upload_time);
 These indexes optimize author pages, category filtering, timeline ordering, and hot-video queries. The experiment system is designed for before/after comparisons with and without secondary indexes.
 
 ## Experiment Output
-
-![Database performance comparison](docs/assets/performance-results.png)
 
 Benchmark scripts print:
 
