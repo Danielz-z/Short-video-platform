@@ -1,5 +1,7 @@
 # System Design
 
+![System architecture](assets/architecture.png)
+
 ## 1. Design Goals
 
 The project was refactored from a single-file Flask application into a layered backend:
@@ -36,4 +38,3 @@ High-frequency access paths:
 - Backup and restore commands use `MYSQL_PWD` in the child process environment instead of command-line `-pPASSWORD`.
 - Video update and deletion require the current user to be the video author.
 - `.env`, backup SQL files, generated benchmark logs, and generated charts are ignored by Git.
-

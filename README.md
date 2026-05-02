@@ -14,6 +14,8 @@ An engineering-style Flask + MySQL short video platform. The project demonstrate
 
 ## Architecture
 
+![System architecture](docs/assets/architecture.png)
+
 ```text
 backend/
   app.py              # Flask application entry point
@@ -51,6 +53,8 @@ CREATE INDEX idx_videos_upload_time ON videos(upload_time);
 These indexes optimize author pages, category filtering, timeline ordering, and hot-video queries. The experiment system is designed for before/after comparisons with and without secondary indexes.
 
 ## Experiment Output
+
+![Database performance comparison](docs/assets/performance-results.png)
 
 Benchmark scripts print:
 

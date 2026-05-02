@@ -1,5 +1,7 @@
 # Database Performance Analysis
 
+![Database performance comparison](assets/performance-results.png)
+
 ## 1. Experiment Environment
 
 - Backend: Flask + mysql-connector-python
@@ -55,4 +57,3 @@ Insert throughput may be lower in the indexed group because each insert must mai
 For this short video platform, author pages, field/category pages, timelines, and hot-video lists are core read paths. Indexes on `author_id`, `field_id`, `upload_time`, and hot-ranking combinations are justified.
 
 The experiment system demonstrates that database optimization should be driven by measured access patterns rather than by adding indexes blindly.
-
