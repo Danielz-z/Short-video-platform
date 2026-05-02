@@ -30,6 +30,18 @@ The architecture diagram shows the layered Flask backend, MySQL data model, data
 
 The performance diagram summarizes the intended comparison format for index experiments: query latency and QPS before and after adding indexes.
 
+## Application Screenshots
+
+The following screenshots come from the original course project documentation and show the main user-facing workflows.
+
+| Login | Video Dashboard |
+| --- | --- |
+| <img src="docs/assets/screenshots/login.png" alt="Login page" width="420"> | <img src="docs/assets/screenshots/video-dashboard.png" alt="Video dashboard" width="420"> |
+
+| Upload Video | Admin Dashboard |
+| --- | --- |
+| <img src="docs/assets/screenshots/upload-video.png" alt="Upload video page" width="420"> | <img src="docs/assets/screenshots/admin-dashboard.png" alt="Admin dashboard" width="420"> |
+
 ## Architecture
 
 ```text
