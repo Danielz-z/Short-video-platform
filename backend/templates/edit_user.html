@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Edit User</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="logout-btn">Back</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('edit_user', user_id=user.user_id) }}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone_email">Email / Phone</label>
+            <input type="text" id="phone_email" name="phone_email" value="{{ user.phone_email }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">New Password, leave blank to keep the current one</label>
+            <input type="password" id="password" name="password">
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+                <option value="M" {% if user.gender == 'M' %}selected{% endif %}>Male</option>
+                <option value="F" {% if user.gender == 'F' %}selected{% endif %}>Female</option>
+                <option value="O" {% if user.gender == 'O' %}selected{% endif %}>Other</option>
+                <option value="U" {% if user.gender == 'U' or not user.gender %}selected{% endif %}>Unknown</option>
+            </select>
+        </div>
+
+        <button type="submit">Update User</button>
+    </form>
+{% endblock %}
+

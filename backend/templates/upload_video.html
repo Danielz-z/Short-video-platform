@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Video{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="welcome">Welcome, {{ session.username }}.</div>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Log Out</a>
+</div>
+
+<h2 class="section-title">Upload Video</h2>
+<form method="POST" action="{{ url_for('upload_video') }}">
+    <div class="form-group">
+        <label for="title">Video Title</label>
+        <input id="title" type="text" name="title" required>
+    </div>
+    <div class="form-group">
+        <label for="url">Video URL</label>
+        <input id="url" type="text" name="url" required>
+    </div>
+    <div class="form-group">
+        <label for="field_id">Field ID</label>
+        <input id="field_id" type="number" name="field_id" required>
+    </div>
+    <button type="submit">Upload</button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Video Detail{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>Video Detail</h1>
+    <a href="{{ url_for('video_dashboard') }}" class="logout-btn">Back</a>
+</div>
+
+<table>
+    <tr><th>Video ID</th><td>{{ video.video_id }}</td></tr>
+    <tr><th>Title</th><td>{{ video.title }}</td></tr>
+    <tr><th>Video URL</th><td><a href="{{ video.video_url }}" target="_blank">{{ video.video_url }}</a></td></tr>
+    <tr><th>Uploaded At</th><td>{{ video.upload_time }}</td></tr>
+    <tr><th>Author</th><td>{{ video.author_name }}</td></tr>
+    <tr><th>Field</th><td>{{ video.field_name or 'None' }}</td></tr>
+    <tr><th>Likes</th><td>{{ video.likes_count }}</td></tr>
+</table>
+{% endblock %}
+

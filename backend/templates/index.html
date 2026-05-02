@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<h1>User Management</h1>
+<a href="{{ url_for('register') }}" class="action-btn edit-btn">Add User</a>
+<table>
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Email / Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.phone_email }}</td>
+            <td>
+                <a href="{{ url_for('view_user', user_id=user.user_id) }}">View</a>
+                <a href="{{ url_for('edit_user', user_id=user.user_id) }}">Edit</a>
+                <a href="{{ url_for('delete_user', user_id=user.user_id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

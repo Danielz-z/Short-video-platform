@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}User Detail{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>User Detail</h1>
+    <a href="{{ url_for('admin_dashboard') }}" class="logout-btn">Back</a>
+</div>
+
+<h2 class="section-title">Profile</h2>
+<table>
+    <tr>
+        <th>User ID</th>
+        <td>{{ user.user_id }}</td>
+    </tr>
+    <tr>
+        <th>Username</th>
+        <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+        <th>Email / Phone</th>
+        <td>{{ user.phone_email }}</td>
+    </tr>
+    <tr>
+        <th>Fans</th>
+        <td>{{ fans_count }}</td>
+    </tr>
+    <tr>
+        <th>Registered At</th>
+        <td>{{ user.register_time }}</td>
+    </tr>
+    <tr>
+        <th>Gender</th>
+        <td>
+            {% if user.gender == 'M' %}Male
+            {% elif user.gender == 'F' %}Female
+            {% elif user.gender == 'O' %}Other
+            {% else %}Unknown
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<h2 class="section-title">Recent Videos</h2>
+{% if videos %}
+    <table>
+        <thead>
+            <tr>
+                <th>Video ID</th>
+                <th>Title</th>
+                <th>Likes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for video in videos %}
+            <tr>
+                <td>{{ video.video_id }}</td>
+                <td>{{ video.title }}</td>
+                <td>{{ video.likes_count }}</td>
+                <td>
+                    <form class="inline-form" action="{{ url_for('view_video', video_id=video.video_id) }}" method="get">
+                        <button type="submit">View</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>This user has not published any videos yet.</p>
+{% endif %}
+{% endblock %}
+

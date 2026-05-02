@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ video.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ video.title }}</h1>
+<p>Author: {{ video.author_name }} | Uploaded at: {{ video.upload_time }}</p>
+
+<video width="100%" controls>
+    <source src="{{ url_for('static', filename='uploads/' + video.video_url) }}" type="video/mp4">
+    Your browser does not support video playback.
+</video>
+
+<div class="toolbar">
+    <span>Likes: {{ video.likes_count }}</span>
+    <form class="inline-form" action="{{ url_for('like_video') }}" method="post">
+        <input type="hidden" name="video_id" value="{{ video.video_id }}">
+        <button type="submit">Like</button>
+    </form>
+</div>
+
+{% if comments is defined %}
+<h2 class="section-title">Comments</h2>
+{% for comment in comments %}
+    <div class="alert alert-info">
+        <strong>{{ comment.username }}</strong>
+        <p>{{ comment.content }}</p>
+        <small>{{ comment.comment_time }}</small>
+    </div>
+{% endfor %}
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <div class="welcome">Welcome, {{ session.username }}.</div>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Log Out</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="toolbar">
+        <form class="inline-form" action="{{ url_for('backup_database') }}" method="POST">
+            <button type="submit">Back Up Database</button>
+        </form>
+
+        <form class="inline-form" action="{{ url_for('restore_database') }}" method="POST">
+            <input type="text" name="filename" placeholder="backup_YYYYMMDD.sql" required>
+            <button type="submit">Restore</button>
+        </form>
+    </div>
+
+    <h2 class="section-title">User Management</h2>
+    <a href="{{ url_for('register') }}" class="action-btn edit-btn">Add User</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email / Phone</th>
+                <th>Fans</th>
+                <th>Registered At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.phone_email }}</td>
+                <td>{{ user.fans_count }}</td>
+                <td>{{ user.register_time }}</td>
+                <td>
+                    <a href="{{ url_for('view_user', user_id=user.user_id) }}" class="action-btn view-btn">View</a>
+                    <a href="{{ url_for('edit_user', user_id=user.user_id) }}" class="action-btn edit-btn">Edit</a>
+                    <a href="{{ url_for('delete_user', user_id=user.user_id) }}" class="action-btn delete-btn" onclick="return confirm('Delete this user?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
