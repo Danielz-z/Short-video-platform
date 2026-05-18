@@ -62,9 +62,9 @@ Admin access is determined by the `users.role = 'admin'` database field.
 The benchmark scripts are not HTTP APIs. They are command-line entry points for database performance experiments.
 
 ```bash
-python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300
+python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333
 python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3
-python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300
+python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333
 ```
 
 Outputs include total operations, elapsed time, average latency, P95 latency, and QPS.

@@ -183,7 +183,7 @@ python backend/app.py
 Run a mixed benchmark:
 
 ```bash
-python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300
+python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333
 ```
 
 Summarize benchmark logs:

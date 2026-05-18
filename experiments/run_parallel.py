@@ -5,6 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+DEFAULT_AUTHOR_ID = "33333333-3333-3333-3333-333333333333"
 
 
 def main():
@@ -13,6 +14,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=100)
     parser.add_argument("--duration", type=int, default=60)
     parser.add_argument("--field-id", type=int, default=3)
+    parser.add_argument("--author-id", default=DEFAULT_AUTHOR_ID)
     args = parser.parse_args()
 
     insert_log = ROOT / "logs" / "insert_log.csv"
@@ -30,6 +32,8 @@ def main():
             str(args.duration),
             "--field-id",
             str(args.field_id),
+            "--author-id",
+            args.author_id,
             "--log",
             str(insert_log),
         ],
@@ -58,4 +62,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

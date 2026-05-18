@@ -19,7 +19,7 @@ The target scale is 1,000,000 rows in the `videos` table. Insert workers use con
 Insert benchmark:
 
 ```bash
-python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300
+python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333
 ```
 
 Query benchmark:
@@ -31,7 +31,7 @@ python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3
 Mixed workload benchmark:
 
 ```bash
-python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300
+python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333
 ```
 
 ## 4. Control Groups

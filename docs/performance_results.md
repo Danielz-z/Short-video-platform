@@ -11,12 +11,12 @@ This project includes benchmark scripts for insert-heavy, query-heavy, and mixed
 ## Commands
 
 ```bash
-python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --log experiments/logs/insert_no_index.csv
+python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333 --log experiments/logs/insert_no_index.csv
 python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3 --log experiments/logs/query_no_index.csv
 
 mysql -u root -p < database/indexes.sql
 
-python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --log experiments/logs/insert_with_index.csv
+python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333 --log experiments/logs/insert_with_index.csv
 python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3 --log experiments/logs/query_with_index.csv
 
 python experiments/analysis/summarize_logs.py experiments/logs/query_no_index.csv experiments/logs/query_with_index.csv

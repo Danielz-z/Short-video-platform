@@ -13,6 +13,8 @@ import mysql.connector
 sys.path.append(str(Path(__file__).resolve().parents[2] / "backend"))
 from config import DB_CONFIG  # noqa: E402
 
+DEFAULT_AUTHOR_ID = "33333333-3333-3333-3333-333333333333"
+
 
 def connect_db():
     return mysql.connector.connect(**DB_CONFIG)
@@ -86,7 +88,7 @@ def main():
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--batch-size", type=int, default=100)
     parser.add_argument("--duration", type=int, default=60)
-    parser.add_argument("--author-id", default="user001")
+    parser.add_argument("--author-id", default=DEFAULT_AUTHOR_ID)
     parser.add_argument("--field-id", type=int, default=3)
     parser.add_argument("--log", type=Path, default=Path("../logs/insert_log.csv"))
     args = parser.parse_args()
