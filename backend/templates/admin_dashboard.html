@@ -29,6 +29,7 @@
 
     <h2 class="section-title">User Management</h2>
     <a href="{{ url_for('register') }}" class="action-btn edit-btn">Add User</a>
+    <p>Total users: {{ total_users }}</p>
 
     <table>
         <thead>
@@ -62,4 +63,14 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('admin_dashboard', page=page - 1) }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page }} of {{ total_pages }}</span>
+        {% if page < total_pages %}
+            <a href="{{ url_for('admin_dashboard', page=page + 1) }}">Next</a>
+        {% endif %}
+    </div>
 {% endblock %}

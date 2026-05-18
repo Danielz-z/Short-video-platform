@@ -1,9 +1,12 @@
 import mysql.connector
+from math import ceil
 from flask import flash, redirect, render_template, request, session, url_for
 
 from dao import user_dao, video_dao
 from services import video_service
 from utils.db import get_db_connection
+
+PAGE_SIZE = 10
 
 
 def _require_login():
@@ -16,18 +19,21 @@ def register_video_routes(app):
         if not _require_login():
             return redirect(url_for("login"))
 
-        author_id = session["user_id"]
-        if request.method == "POST":
-            author_id = request.form.get("author_id") or author_id
+        author_id = request.values.get("author_id") or session["user_id"]
+        page = max(request.args.get("page", 1, type=int) or 1, 1)
 
         conn = get_db_connection()
         try:
             user = user_dao.get_user_by_id(conn, session["user_id"])
-            videos = video_dao.list_user_videos(conn, session["user_id"])
+            total_videos = video_dao.count_user_videos(conn, session["user_id"])
+            total_pages = max(ceil(total_videos / PAGE_SIZE), 1)
+            page = min(page, total_pages)
+            videos = video_dao.list_user_videos(conn, session["user_id"], PAGE_SIZE, (page - 1) * PAGE_SIZE)
             popular_videos = video_dao.get_hot_videos_by_author(conn, author_id)
         except mysql.connector.Error as err:
             flash(f"Query failed: {err}", "error")
             user, videos, popular_videos = {"username": session.get("username", "")}, [], []
+            total_videos, total_pages = 0, 1
         finally:
             conn.close()
 
@@ -38,6 +44,9 @@ def register_video_routes(app):
             videos=videos,
             popular_videos=popular_videos,
             searched_author_id=author_id,
+            page=page,
+            total_pages=total_pages,
+            total_videos=total_videos,
         )
 
     @app.route("/upload_video", methods=["GET", "POST"])

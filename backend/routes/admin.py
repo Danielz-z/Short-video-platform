@@ -1,6 +1,7 @@
 import os
 import subprocess
 from datetime import datetime
+from math import ceil
 
 import mysql.connector
 from flask import flash, redirect, render_template, request, session, url_for
@@ -9,6 +10,8 @@ from config import BACKUP_DIR, DB_CONFIG
 from dao import user_dao
 from services import user_service
 from utils.db import get_db_connection
+
+PAGE_SIZE = 10
 
 
 def _require_admin():
@@ -27,12 +30,22 @@ def register_admin_routes(app):
         if not _require_admin():
             return redirect(url_for("login"))
 
+        page = max(request.args.get("page", 1, type=int) or 1, 1)
         conn = get_db_connection()
         try:
-            users = user_dao.list_users(conn)
+            total_users = user_dao.count_users(conn)
+            total_pages = max(ceil(total_users / PAGE_SIZE), 1)
+            page = min(page, total_pages)
+            users = user_dao.list_users(conn, PAGE_SIZE, (page - 1) * PAGE_SIZE)
         finally:
             conn.close()
-        return render_template("admin_dashboard.html", users=users)
+        return render_template(
+            "admin_dashboard.html",
+            users=users,
+            page=page,
+            total_pages=total_pages,
+            total_users=total_users,
+        )
 
     @app.route("/admin/register", methods=["GET", "POST"])
     def register():

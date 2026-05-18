@@ -17,7 +17,7 @@ Admin access is determined by the `users.role = 'admin'` database field.
 
 | Method | Path | Description | Auth |
 | --- | --- | --- | --- |
-| `GET` | `/admin` | Shows the admin dashboard and user list. | Admin |
+| `GET` | `/admin?page=1` | Shows the admin dashboard and paginated user list. | Admin |
 | `GET` | `/admin/register` | Renders the user creation form. | Admin |
 | `POST` | `/admin/register` | Creates a user with a UUID primary key, hashed password, and role. | Admin |
 | `GET` | `/admin/edit/<user_id>` | Renders the user edit form. | Admin |
@@ -31,8 +31,8 @@ Admin access is determined by the `users.role = 'admin'` database field.
 
 | Method | Path | Description | Auth |
 | --- | --- | --- | --- |
-| `GET` | `/videos` | Shows the current user's videos and hot videos. | User |
-| `POST` | `/videos` | Searches hot videos by author ID. | User |
+| `GET` | `/videos?page=1&author_id=<id>` | Shows the current user's paginated videos and hot videos by author. | User |
+| `POST` | `/videos` | Backward-compatible hot-video search form entry point. | User |
 | `GET` | `/upload_video` | Renders the video upload form. | User |
 | `POST` | `/upload_video` | Creates a video with a UUID primary key. | User |
 | `POST` | `/update_video` | Updates a video title. The current user must be the author. | User |

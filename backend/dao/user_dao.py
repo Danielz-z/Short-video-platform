@@ -16,10 +16,22 @@ def get_user_by_id(conn, user_id):
     return cursor.fetchone()
 
 
-def list_users(conn):
+def count_users(conn):
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT COUNT(*) AS total FROM users")
+    return cursor.fetchone()["total"]
+
+
+def list_users(conn, limit=10, offset=0):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
-        "SELECT user_id, username, phone_email, role, fans_count, register_time FROM users"
+        """
+        SELECT user_id, username, phone_email, role, fans_count, register_time
+        FROM users
+        ORDER BY register_time DESC, user_id
+        LIMIT %s OFFSET %s
+        """,
+        (limit, offset),
     )
     return cursor.fetchall()
 

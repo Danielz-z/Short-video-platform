@@ -1,7 +1,16 @@
 from datetime import datetime
 
 
-def list_user_videos(conn, user_id):
+def count_user_videos(conn, user_id):
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT COUNT(*) AS total FROM videos WHERE author_id = %s",
+        (user_id,),
+    )
+    return cursor.fetchone()["total"]
+
+
+def list_user_videos(conn, user_id, limit=10, offset=0):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
         """
@@ -10,8 +19,9 @@ def list_user_videos(conn, user_id):
         LEFT JOIN fields f ON v.field_id = f.field_id
         WHERE v.author_id = %s
         ORDER BY v.upload_time DESC
+        LIMIT %s OFFSET %s
         """,
-        (user_id,),
+        (user_id, limit, offset),
     )
     return cursor.fetchall()
 
@@ -111,4 +121,3 @@ def get_video_detail(conn, video_id):
         (video_id,),
     )
     return cursor.fetchone()
-

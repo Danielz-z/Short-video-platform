@@ -37,6 +37,7 @@ This project focuses on the database and backend engineering behind a short vide
 | Password security | New passwords are hashed; legacy plaintext passwords are upgraded after successful login |
 | Concurrency safety | UUID video/user IDs avoid count-based ID collisions; likes use a unique `(user_id, video_id)` constraint |
 | Query optimization | Secondary and composite indexes support author pages, category filtering, timelines, and hot-video rankings |
+| Paginated reads | Admin user lists and personal video lists use `COUNT + LIMIT/OFFSET` pagination |
 | Performance experiments | Insert/query/mixed benchmark scripts report QPS, average latency, and P95 latency |
 | Testability | Service-layer unit tests cover password policy, role authorization, user creation, and ownership checks |
 | Continuous integration | GitHub Actions runs unit tests and Python syntax checks on pushes and pull requests |
@@ -46,7 +47,8 @@ This project focuses on the database and backend engineering behind a short vide
 
 - User login and role-based admin-managed user registration
 - User profile viewing, editing, and deletion
-- Video upload, listing, detail view, title update, and deletion
+- Paginated user and video listing
+- Video upload, detail view, title update, and deletion
 - Like records with duplicate-like protection
 - Database backup and restore entry points
 - MySQL schema, index, procedure, and seed scripts

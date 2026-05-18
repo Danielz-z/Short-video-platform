@@ -14,9 +14,9 @@ The project was refactored from a single-file Flask application into a layered b
 
 ## 2. Core Modules
 
-The user module handles login, role-based admin-managed registration, profile editing, user deletion, and user detail views. Passwords are stored with Werkzeug hashes. Legacy plain-text passwords are accepted once and upgraded to hashes after successful login.
+The user module handles login, role-based admin-managed registration, paginated user listing, profile editing, user deletion, and user detail views. Passwords are stored with Werkzeug hashes. Legacy plain-text passwords are accepted once and upgraded to hashes after successful login.
 
-The video module handles video listing, upload, title updates, deletion, likes, and detail views. `user_id` and `video_id` use UUIDs, removing the concurrency risk caused by `COUNT(*)`-based ID generation.
+The video module handles paginated video listing, upload, title updates, deletion, likes, and detail views. `user_id` and `video_id` use UUIDs, removing the concurrency risk caused by `COUNT(*)`-based ID generation.
 
 The admin module handles user management and database backup/restore. Admin access is checked through the `users.role` field rather than username conventions. Database host, user, password, and database name are loaded from environment variables instead of source code.
 
@@ -30,6 +30,8 @@ High-frequency access paths:
 - field/category filtering: `videos.field_id`
 - timeline ordering: `videos.upload_time`
 - hot videos by author: `videos(author_id, likes_count, upload_time)`
+
+List pages use `COUNT(*)` plus `LIMIT/OFFSET` pagination so user and video dashboards do not load every matching row at once as data grows.
 
 ## 4. Security Design
 

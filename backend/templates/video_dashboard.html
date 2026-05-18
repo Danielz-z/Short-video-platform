@@ -18,6 +18,7 @@
 
 <h2 class="section-title">My Videos</h2>
 <a href="{{ url_for('upload_video') }}" class="action-btn edit-btn">Upload Video</a>
+<p>Total videos: {{ total_videos }}</p>
 
 <table>
     <thead>
@@ -46,8 +47,18 @@
     </tbody>
 </table>
 
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="{{ url_for('video_dashboard', page=page - 1, author_id=searched_author_id) }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page }} of {{ total_pages }}</span>
+    {% if page < total_pages %}
+        <a href="{{ url_for('video_dashboard', page=page + 1, author_id=searched_author_id) }}">Next</a>
+    {% endif %}
+</div>
+
 <h2 class="section-title">Hot Videos By Author</h2>
-<form method="POST" action="{{ url_for('video_dashboard') }}">
+<form method="GET" action="{{ url_for('video_dashboard') }}">
     <div class="form-group">
         <label for="author_id">Author ID</label>
         <input id="author_id" type="text" name="author_id" value="{{ searched_author_id or '' }}" required>
@@ -99,4 +110,3 @@
     </tbody>
 </table>
 {% endblock %}
-
