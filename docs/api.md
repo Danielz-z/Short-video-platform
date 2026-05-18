@@ -13,17 +13,17 @@ This project is a server-rendered Flask application. Most routes return HTML tem
 
 ## Admin
 
-Admin access is determined by usernames containing `admin`.
+Admin access is determined by the `users.role = 'admin'` database field.
 
 | Method | Path | Description | Auth |
 | --- | --- | --- | --- |
 | `GET` | `/admin` | Shows the admin dashboard and user list. | Admin |
 | `GET` | `/admin/register` | Renders the user creation form. | Admin |
-| `POST` | `/admin/register` | Creates a user with a UUID primary key and hashed password. | Admin |
+| `POST` | `/admin/register` | Creates a user with a UUID primary key, hashed password, and role. | Admin |
 | `GET` | `/admin/edit/<user_id>` | Renders the user edit form. | Admin |
-| `POST` | `/admin/edit/<user_id>` | Updates username, contact info, gender, and optionally password. | Admin |
+| `POST` | `/admin/edit/<user_id>` | Updates username, contact info, role, gender, and optionally password. | Admin |
 | `GET` | `/admin/user/<user_id>` | Shows user details and recent videos. | Admin |
-| `GET` | `/admin/delete/<user_id>` | Deletes a user and related graph data. | Admin |
+| `POST` | `/admin/delete/<user_id>` | Deletes a user and related graph data. The signed-in admin cannot delete itself. | Admin |
 | `POST` | `/admin/backup` | Creates a database backup with `mysqldump`. | Admin |
 | `POST` | `/admin/restore` | Restores a backup file from `database/backup`. | Admin |
 
@@ -68,4 +68,3 @@ python experiments/run_parallel.py --threads 8 --batch-size 500 --duration 300
 ```
 
 Outputs include total operations, elapsed time, average latency, P95 latency, and QPS.
-

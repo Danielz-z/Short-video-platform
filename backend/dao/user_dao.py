@@ -4,7 +4,7 @@ from datetime import datetime
 def get_user_by_username(conn, username):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
-        "SELECT user_id, username, password FROM users WHERE username = %s",
+        "SELECT user_id, username, password, role FROM users WHERE username = %s",
         (username,),
     )
     return cursor.fetchone()
@@ -19,41 +19,41 @@ def get_user_by_id(conn, user_id):
 def list_users(conn):
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
-        "SELECT user_id, username, phone_email, fans_count, register_time FROM users"
+        "SELECT user_id, username, phone_email, role, fans_count, register_time FROM users"
     )
     return cursor.fetchall()
 
 
-def create_user(conn, user_id, username, phone_email, password_hash):
+def create_user(conn, user_id, username, phone_email, password_hash, role="user"):
     cursor = conn.cursor()
     cursor.execute(
         """
-        INSERT INTO users (user_id, username, phone_email, password, register_time)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO users (user_id, username, phone_email, password, role, register_time)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """,
-        (user_id, username, phone_email, password_hash, datetime.now()),
+        (user_id, username, phone_email, password_hash, role, datetime.now()),
     )
 
 
-def update_user(conn, user_id, username, phone_email, gender, password_hash=None):
+def update_user(conn, user_id, username, phone_email, role, gender, password_hash=None):
     cursor = conn.cursor()
     if password_hash:
         cursor.execute(
             """
             UPDATE users
-            SET username = %s, phone_email = %s, password = %s, gender = %s
+            SET username = %s, phone_email = %s, role = %s, password = %s, gender = %s
             WHERE user_id = %s
             """,
-            (username, phone_email, password_hash, gender, user_id),
+            (username, phone_email, role, password_hash, gender, user_id),
         )
     else:
         cursor.execute(
             """
             UPDATE users
-            SET username = %s, phone_email = %s, gender = %s
+            SET username = %s, phone_email = %s, role = %s, gender = %s
             WHERE user_id = %s
             """,
-            (username, phone_email, gender, user_id),
+            (username, phone_email, role, gender, user_id),
         )
 
 
@@ -115,4 +115,3 @@ def update_password_hash(conn, user_id, password_hash):
         "UPDATE users SET password = %s WHERE user_id = %s",
         (password_hash, user_id),
     )
-

@@ -14,11 +14,11 @@ The project was refactored from a single-file Flask application into a layered b
 
 ## 2. Core Modules
 
-The user module handles login, admin-managed registration, profile editing, user deletion, and user detail views. Passwords are stored with Werkzeug hashes. Legacy plain-text passwords are accepted once and upgraded to hashes after successful login.
+The user module handles login, role-based admin-managed registration, profile editing, user deletion, and user detail views. Passwords are stored with Werkzeug hashes. Legacy plain-text passwords are accepted once and upgraded to hashes after successful login.
 
 The video module handles video listing, upload, title updates, deletion, likes, and detail views. `user_id` and `video_id` use UUIDs, removing the concurrency risk caused by `COUNT(*)`-based ID generation.
 
-The admin module handles user management and database backup/restore. Database host, user, password, and database name are loaded from environment variables instead of source code.
+The admin module handles user management and database backup/restore. Admin access is checked through the `users.role` field rather than username conventions. Database host, user, password, and database name are loaded from environment variables instead of source code.
 
 ## 3. Database Design
 
@@ -35,6 +35,8 @@ High-frequency access paths:
 
 - Database configuration is injected with `DB_HOST`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME`.
 - New passwords are hashed before storage.
+- Admin permissions are role-based through `users.role = 'admin'`.
+- User deletion is handled through a POST form and blocks deletion of the currently signed-in admin account.
 - Backup and restore commands use `MYSQL_PWD` in the child process environment instead of command-line `-pPASSWORD`.
 - Video update and deletion require the current user to be the video author.
 - `.env`, backup SQL files, generated benchmark logs, and generated charts are ignored by Git.

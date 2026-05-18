@@ -1,0 +1,26 @@
+# Resume Packaging
+
+## Project Title
+
+Short Video Platform Database System
+
+## One-Line Summary
+
+Built a Flask + MySQL short video platform prototype with normalized relational modeling, role-based administration, stored procedures, indexing, and concurrent database performance experiments.
+
+## Resume Bullets
+
+- Designed a MySQL schema for a short video platform with 9 business tables, foreign keys, unique constraints, CHECK constraints, and normalized relationships across users, videos, likes, comments, follows, messages, fields, and tags.
+- Refactored the original single-file Flask course project into a layered `routes / services / dao` backend, separating HTTP handling, business rules, and SQL access for better maintainability.
+- Implemented role-based admin access through a `users.role` field, hashed password storage with Werkzeug, and legacy plaintext-password migration after successful login.
+- Added stored procedures for hot-video lookup, video insertion, title update, and deletion, while keeping DAO-level fallback SQL for local development robustness.
+- Optimized high-frequency queries with secondary and composite indexes on author, field/category, upload time, popularity, likes, comments, follows, and messages.
+- Built concurrent insert/query benchmark scripts that report QPS, average latency, and P95 latency to compare indexed and non-indexed database performance.
+- Added service-layer unit tests for password policy, role authorization, user creation, and video ownership checks without requiring a live MySQL instance.
+
+## Interview Talking Points
+
+- The strongest database angle is the tradeoff between read optimization and write overhead: indexes improve author/category/timeline queries, but concurrent inserts must maintain additional secondary indexes.
+- The strongest backend angle is the migration from a course-style monolithic Flask file to a maintainable layered architecture.
+- The strongest security angle is replacing hard-coded database credentials and plaintext passwords with environment configuration and password hashing.
+- The strongest reliability angle is using UUIDs and unique constraints to avoid ID collisions and duplicate likes under concurrent access.

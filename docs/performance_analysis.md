@@ -57,3 +57,5 @@ Insert throughput may be lower in the indexed group because each insert must mai
 For this short video platform, author pages, field/category pages, timelines, and hot-video lists are core read paths. Indexes on `author_id`, `field_id`, `upload_time`, and hot-ranking combinations are justified.
 
 The experiment system demonstrates that database optimization should be driven by measured access patterns rather than by adding indexes blindly.
+
+For the repeatable result-recording workflow and table template, see [performance_results.md](performance_results.md).

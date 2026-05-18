@@ -47,6 +47,7 @@ def register_admin_routes(app):
                     request.form["username"],
                     request.form["phone_email"],
                     request.form["password"],
+                    request.form.get("role", "user"),
                 )
                 conn.commit()
                 flash("User created successfully", "success")
@@ -61,10 +62,13 @@ def register_admin_routes(app):
 
         return render_template("register.html")
 
-    @app.route("/admin/delete/<user_id>", methods=["GET"])
+    @app.route("/admin/delete/<user_id>", methods=["POST"])
     def delete_user(user_id):
         if not _require_admin():
             return redirect(url_for("login"))
+        if user_id == session["user_id"]:
+            flash("You cannot delete the currently signed-in admin account", "error")
+            return redirect(url_for("admin_dashboard"))
 
         conn = get_db_connection()
         try:
@@ -93,6 +97,7 @@ def register_admin_routes(app):
                         request.form["username"],
                         request.form["phone_email"],
                         request.form.get("password"),
+                        request.form.get("role", "user"),
                         request.form.get("gender", "U"),
                     )
                     conn.commit()

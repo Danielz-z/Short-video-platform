@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL,
     phone_email VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     fans_count INT NOT NULL DEFAULT 0,
     register_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     gender ENUM('M', 'F', 'O', 'U') NOT NULL DEFAULT 'U',
