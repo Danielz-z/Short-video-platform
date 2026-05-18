@@ -9,7 +9,7 @@ The project was refactored from a single-file Flask application into a layered b
 - `routes`: HTTP requests, forms, page rendering, redirects, and flash messages
 - `services`: authentication, password policy, permission checks, and video business rules
 - `dao`: SQL statements and stored procedure calls
-- `utils/db.py`: shared MySQL connection helper
+- `utils/db.py`: shared MySQL connection pool helper
 - `experiments`: isolated database performance experiments outside the web application
 
 ## 2. Core Modules
@@ -19,6 +19,8 @@ The user module handles login, role-based admin-managed registration, paginated 
 The video module handles paginated video listing, upload, title updates, deletion, likes, and detail views. `user_id` and `video_id` use UUIDs, removing the concurrency risk caused by `COUNT(*)`-based ID generation.
 
 The admin module handles user management and database backup/restore. Admin access is checked through the `users.role` field rather than username conventions. Database host, user, password, and database name are loaded from environment variables instead of source code.
+
+Database access uses a lazily initialized MySQL connection pool. Flask request handlers borrow pooled connections through `get_db_connection()` and return them with `close()`, reducing repeated connection setup overhead.
 
 ## 3. Database Design
 

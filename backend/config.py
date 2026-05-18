@@ -13,6 +13,7 @@ DB_CONFIG = {
     "charset": "utf8mb4",
 }
 
+DB_POOL_NAME = os.getenv("DB_POOL_NAME", "short_video_pool")
+DB_POOL_SIZE = int(os.getenv("DB_POOL_SIZE", "5"))
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-me")
 BACKUP_DIR = Path(os.getenv("BACKUP_DIR", PROJECT_ROOT / "database" / "backup"))
-

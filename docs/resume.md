@@ -6,13 +6,14 @@ Short Video Platform Database System
 
 ## One-Line Summary
 
-Built a Flask + MySQL short video platform prototype with normalized relational modeling, role-based administration, stored procedures, indexing, concurrent database performance experiments, GitHub Actions CI, and Docker Compose local deployment.
+Built a Flask + MySQL short video platform prototype with normalized relational modeling, role-based administration, connection pooling, stored procedures, indexing, concurrent database performance experiments, GitHub Actions CI, and Docker Compose local deployment.
 
 ## Resume Bullets
 
 - Designed a MySQL schema for a short video platform with 9 business tables, foreign keys, unique constraints, CHECK constraints, and normalized relationships across users, videos, likes, comments, follows, messages, fields, and tags.
 - Refactored the original single-file Flask course project into a layered `routes / services / dao` backend, separating HTTP handling, business rules, and SQL access for better maintainability.
 - Implemented role-based admin access through a `users.role` field, hashed password storage with Werkzeug, and legacy plaintext-password migration after successful login.
+- Added a MySQL connection pool for Flask request handlers to reuse database connections and reduce repeated connection setup overhead.
 - Added stored procedures for hot-video lookup, video insertion, title update, and deletion, while keeping DAO-level fallback SQL for local development robustness.
 - Optimized high-frequency queries with secondary and composite indexes on author, field/category, upload time, popularity, likes, comments, follows, and messages.
 - Added `COUNT + LIMIT/OFFSET` pagination for admin user management and personal video lists to avoid full-result loading as data grows.

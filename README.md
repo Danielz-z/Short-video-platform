@@ -20,7 +20,7 @@ This project focuses on the database and backend engineering behind a short vide
 | --- | --- |
 | Backend | Python, Flask, Jinja2 |
 | Database | MySQL 8.x, InnoDB, stored procedures, indexes |
-| Data Access | mysql-connector-python, DAO layer |
+| Data Access | mysql-connector-python, connection pool, DAO layer |
 | Security | Werkzeug password hashing, environment variables, role-based access control |
 | Testing | unittest, unittest.mock |
 | CI | GitHub Actions |
@@ -36,6 +36,7 @@ This project focuses on the database and backend engineering behind a short vide
 | Role authorization | `users.role` controls admin access instead of username conventions |
 | Password security | New passwords are hashed; legacy plaintext passwords are upgraded after successful login |
 | Concurrency safety | UUID video/user IDs avoid count-based ID collisions; likes use a unique `(user_id, video_id)` constraint |
+| Connection reuse | Flask requests use a MySQL connection pool instead of opening a new connection for every query |
 | Query optimization | Secondary and composite indexes support author pages, category filtering, timelines, and hot-video rankings |
 | Paginated reads | Admin user lists and personal video lists use `COUNT + LIMIT/OFFSET` pagination |
 | Performance experiments | Insert/query/mixed benchmark scripts report QPS, average latency, and P95 latency |
@@ -95,7 +96,7 @@ backend/
   routes/             # HTTP and template layer
   services/           # Business rules
   dao/                # SQL and stored procedure access
-  utils/db.py         # MySQL connection helper
+  utils/db.py         # MySQL connection pool helper
 database/             # Schema, indexes, procedures, seed data, backups
 experiments/          # Insert/query/concurrent performance experiments
 docs/                 # Design and performance analysis documents
@@ -199,6 +200,7 @@ $env:DB_HOST="localhost"
 $env:DB_USER="root"
 $env:DB_PASSWORD="your_password"
 $env:DB_NAME="short_video_platform"
+$env:DB_POOL_SIZE="5"
 $env:SECRET_KEY="change-me"
 ```
 
