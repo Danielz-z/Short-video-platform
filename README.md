@@ -1,5 +1,7 @@
 # Short Video Platform
 
+[![CI](https://github.com/Danielz-z/Short-video-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Danielz-z/Short-video-platform/actions/workflows/ci.yml)
+
 An engineering-style Flask + MySQL short video platform database system. This project was upgraded from a database course design into a portfolio-ready backend project with normalized relational modeling, layered Flask architecture, role-based administration, security cleanup, and repeatable database performance experiments.
 
 ## Project Value
@@ -21,6 +23,7 @@ This project focuses on the database and backend engineering behind a short vide
 | Data Access | mysql-connector-python, DAO layer |
 | Security | Werkzeug password hashing, environment variables, role-based access control |
 | Testing | unittest, unittest.mock |
+| CI | GitHub Actions |
 | Experiment | Python threading, CSV logs, pandas, matplotlib |
 | Deployment | Docker, Docker Compose |
 
@@ -36,6 +39,7 @@ This project focuses on the database and backend engineering behind a short vide
 | Query optimization | Secondary and composite indexes support author pages, category filtering, timelines, and hot-video rankings |
 | Performance experiments | Insert/query/mixed benchmark scripts report QPS, average latency, and P95 latency |
 | Testability | Service-layer unit tests cover password policy, role authorization, user creation, and ownership checks |
+| Continuous integration | GitHub Actions runs unit tests and Python syntax checks on pushes and pull requests |
 | One-command startup | Docker Compose starts Flask and MySQL, then initializes schema, indexes, procedures, and seed data |
 
 ## Features
