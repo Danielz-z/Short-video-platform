@@ -17,7 +17,7 @@ Built a Flask + MySQL short video platform prototype with normalized relational 
 - Added stored procedures for hot-video lookup, video insertion, title update, and deletion, while keeping DAO-level fallback SQL for local development robustness.
 - Optimized high-frequency queries with secondary and composite indexes on author, field/category, upload time, popularity, likes, comments, follows, and messages.
 - Added `COUNT + LIMIT/OFFSET` pagination for admin user management and personal video lists to avoid full-result loading as data grows.
-- Built concurrent insert/query benchmark scripts that report QPS, average latency, and P95 latency to compare indexed and non-indexed database performance.
+- Built concurrent insert/query benchmark scripts that report QPS, average latency, and P95 latency; in the local MySQL 8.0 benchmark, `idx_videos_upload_time` increased recent-video query throughput from 363.63 queries/s to 1,390.38 queries/s.
 - Added service-layer unit tests for password policy, role authorization, user creation, and video ownership checks without requiring a live MySQL instance.
 - Added Docker Compose orchestration for one-command Flask + MySQL startup with automatic schema, index, stored procedure, and seed-data initialization.
 - Configured GitHub Actions CI to run unit tests and Python syntax checks on pushes and pull requests.

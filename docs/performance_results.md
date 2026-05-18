@@ -12,12 +12,12 @@ This project includes benchmark scripts for insert-heavy, query-heavy, and mixed
 
 ```bash
 python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333 --log experiments/logs/insert_no_index.csv
-python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3 --log experiments/logs/query_no_index.csv
+python experiments/query/query_worker.py --threads 8 --duration 300 --query-type recent --limit 20 --log experiments/logs/query_no_index.csv
 
 mysql -u root -p < database/indexes.sql
 
 python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --duration 300 --author-id 33333333-3333-3333-3333-333333333333 --log experiments/logs/insert_with_index.csv
-python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3 --log experiments/logs/query_with_index.csv
+python experiments/query/query_worker.py --threads 8 --duration 300 --query-type recent --limit 20 --log experiments/logs/query_with_index.csv
 
 python experiments/analysis/summarize_logs.py experiments/logs/query_no_index.csv experiments/logs/query_with_index.csv
 ```
@@ -31,13 +31,28 @@ python experiments/analysis/summarize_logs.py experiments/logs/query_no_index.cs
 | P95 latency | Tail latency for the slowest 5% of operations |
 | Throughput | Operations per second over the log time range |
 
-## Result Table Template
+## Local Benchmark Result
+
+Environment:
+
+- Date: 2026-05-18
+- Database: MySQL 8.0 in Docker Desktop / WSL2
+- Data scale: 124,602 rows in `videos` after the benchmark run
+- Query workload: 8 threads, 30 seconds, `ORDER BY upload_time DESC LIMIT 20`
+- Insert workload: 4 threads, 20 seconds, batch size 100
 
 | Workload | Index state | Operations | Avg latency (s) | P95 latency (s) | Throughput |
 | --- | --- | ---: | ---: | ---: | ---: |
-| Query by `field_id` | No secondary index | TBD | TBD | TBD | TBD |
-| Query by `field_id` | With `idx_videos_field_id` | TBD | TBD | TBD | TBD |
-| Batch insert | No secondary indexes | TBD | TBD | TBD | TBD |
-| Batch insert | With secondary indexes | TBD | TBD | TBD | TBD |
+| Recent-video query | Without `idx_videos_upload_time` | 10,915 queries | 0.020195 | 0.025821 | 363.63 queries/s |
+| Recent-video query | With `idx_videos_upload_time` | 41,738 queries | 0.004746 | 0.006402 | 1,390.38 queries/s |
+| Batch insert | Before secondary timeline index test | 11,900 rows | 0.019816 / batch | 0.030500 / batch | 577.28 rows/s |
+| Batch insert | With secondary indexes enabled | 12,700 rows | 0.023985 / batch | 0.071130 / batch | 620.34 rows/s |
 
-Use this table only after running a clean before/after experiment on the same machine, same data scale, and same thread count.
+Summary:
+
+- Adding `idx_videos_upload_time` improved recent-video query throughput by about 3.8x in this local benchmark.
+- Average recent-query latency dropped from 20.2 ms to 4.7 ms.
+- P95 recent-query latency dropped from 25.8 ms to 6.4 ms.
+- Insert throughput stayed in the same range in this short run, while P95 batch latency increased after secondary indexes were enabled. This reflects the expected tradeoff that indexes speed up read paths but add write-maintenance work.
+
+These values are machine-specific and intended as a reproducible local benchmark record rather than a universal performance claim.

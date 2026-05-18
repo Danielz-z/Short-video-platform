@@ -25,7 +25,7 @@ python experiments/insert/insert_worker.py --threads 8 --batch-size 500 --durati
 Query benchmark:
 
 ```bash
-python experiments/query/query_worker.py --threads 8 --duration 300 --field-id 3
+python experiments/query/query_worker.py --threads 8 --duration 300 --query-type recent --limit 20
 ```
 
 Mixed workload benchmark:

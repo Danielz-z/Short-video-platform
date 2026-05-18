@@ -27,6 +27,7 @@ services:
         condition: service_healthy
     environment:
       DB_HOST: db
+      DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-short_video_password}
       DB_NAME: short_video_platform

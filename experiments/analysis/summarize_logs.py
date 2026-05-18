@@ -32,11 +32,13 @@ def read_log(path):
             if has_header:
                 duration = float(row["duration_seconds"])
                 timestamp = parse_time(row["time"])
-                count = int(row.get("rows") or row.get("matched_rows") or 1)
+                operation = row.get("operation", "")
+                count = int(row.get("rows") or 1) if operation == "insert" else 1
             else:
                 timestamp = parse_time(row[0])
+                operation = row[1].strip() if len(row) > 1 else ""
                 duration = float(row[2])
-                count = 1
+                count = int(row[3]) if operation == "insert" and len(row) > 3 else 1
             rows.append((timestamp, duration, count))
     return rows
 

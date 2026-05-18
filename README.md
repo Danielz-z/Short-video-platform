@@ -135,6 +135,8 @@ CREATE INDEX idx_videos_upload_time ON videos(upload_time);
 
 These indexes optimize author pages, category filtering, timeline ordering, and hot-video queries. The experiment system is designed for before/after comparisons with and without secondary indexes.
 
+A local benchmark record is available in [docs/performance_results.md](docs/performance_results.md). In the recorded Docker/MySQL run, adding `idx_videos_upload_time` improved recent-video query throughput from 363.63 queries/s to 1,390.38 queries/s.
+
 ## Experiment Output
 
 Benchmark scripts print:
@@ -197,6 +199,7 @@ Create environment variables. On Windows PowerShell:
 
 ```powershell
 $env:DB_HOST="localhost"
+$env:DB_PORT="3306"
 $env:DB_USER="root"
 $env:DB_PASSWORD="your_password"
 $env:DB_NAME="short_video_platform"

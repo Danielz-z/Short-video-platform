@@ -17,24 +17,38 @@ def connect_db():
     return mysql.connector.connect(**DB_CONFIG)
 
 
-def query_once(field_id):
-    conn = connect_db()
+def query_once(conn, args):
     cursor = conn.cursor()
     start = time.perf_counter()
     try:
-        cursor.execute("SELECT COUNT(*) FROM videos WHERE field_id = %s", (field_id,))
-        count = cursor.fetchone()[0]
+        if args.query_type == "recent":
+            cursor.execute(
+                """
+                SELECT video_id
+                FROM videos
+                ORDER BY upload_time DESC
+                LIMIT %s
+                """,
+                (args.limit,),
+            )
+            count = len(cursor.fetchall())
+        else:
+            cursor.execute("SELECT COUNT(*) FROM videos WHERE field_id = %s", (args.field_id,))
+            count = cursor.fetchone()[0]
     finally:
         cursor.close()
-        conn.close()
     return time.perf_counter() - start, count
 
 
 def worker(args, stop_at, latencies, lock):
-    while time.time() < stop_at:
-        duration, count = query_once(args.field_id)
-        with lock:
-            latencies.append((duration, count))
+    conn = connect_db()
+    try:
+        while time.time() < stop_at:
+            duration, count = query_once(conn, args)
+            with lock:
+                latencies.append((datetime.now().isoformat(timespec="microseconds"), duration, count))
+    finally:
+        conn.close()
 
 
 def percentile(values, p):
@@ -52,15 +66,22 @@ def write_log(path, rows):
         writer = csv.writer(file)
         if not exists:
             writer.writerow(["time", "operation", "duration_seconds", "matched_rows"])
-        for duration, count in rows:
-            writer.writerow([datetime.now().isoformat(timespec="seconds"), "query", f"{duration:.6f}", count])
+        for row in rows:
+            if len(row) == 3:
+                timestamp, duration, count = row
+            else:
+                duration, count = row
+                timestamp = datetime.now().isoformat(timespec="microseconds")
+            writer.writerow([timestamp, "query", f"{duration:.6f}", count])
 
 
 def main():
     parser = argparse.ArgumentParser(description="Concurrent query benchmark for videos table.")
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--duration", type=int, default=60)
+    parser.add_argument("--query-type", choices=["field", "recent"], default="field")
     parser.add_argument("--field-id", type=int, default=3)
+    parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--log", type=Path, default=Path("../logs/query_log.csv"))
     args = parser.parse_args()
 
@@ -76,7 +97,7 @@ def main():
         thread.join()
 
     elapsed = time.perf_counter() - started
-    durations = [duration for duration, _ in latencies]
+    durations = [duration for _, duration, _ in latencies]
     write_log(args.log, latencies)
 
     print(f"threads={args.threads}")
@@ -89,4 +110,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

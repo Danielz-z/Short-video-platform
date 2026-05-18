@@ -61,7 +61,7 @@ def worker(args, stop_at, latencies, lock):
     while time.time() < stop_at:
         duration, inserted = insert_batch(args.batch_size, args.author_id, args.field_id)
         with lock:
-            latencies.append((duration, inserted))
+            latencies.append((datetime.now().isoformat(timespec="microseconds"), duration, inserted))
 
 
 def percentile(values, p):
@@ -79,8 +79,13 @@ def write_log(path, rows):
         writer = csv.writer(file)
         if not exists:
             writer.writerow(["time", "operation", "duration_seconds", "rows"])
-        for duration, count in rows:
-            writer.writerow([datetime.now().isoformat(timespec="seconds"), "insert", f"{duration:.6f}", count])
+        for row in rows:
+            if len(row) == 3:
+                timestamp, duration, count = row
+            else:
+                duration, count = row
+                timestamp = datetime.now().isoformat(timespec="microseconds")
+            writer.writerow([timestamp, "insert", f"{duration:.6f}", count])
 
 
 def main():
@@ -108,8 +113,8 @@ def main():
         thread.join()
 
     elapsed = time.perf_counter() - started
-    total_rows = sum(count for _, count in latencies)
-    durations = [duration for duration, _ in latencies]
+    total_rows = sum(count for _, _, count in latencies)
+    durations = [duration for _, duration, _ in latencies]
     write_log(args.log, latencies)
 
     print(f"threads={args.threads}")
