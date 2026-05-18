@@ -20,15 +20,16 @@
 - 针对作者页、领域筛选、时间线排序、热门视频等高频访问路径设计二级索引和复合索引，分析索引对读写性能的影响。
 - 编写并发插入/查询压测脚本，输出 QPS、平均延迟、P95 延迟，并提供日志汇总脚本用于索引优化前后对比。
 - 补充服务层单元测试，覆盖密码策略、角色鉴权、用户创建、视频作者权限校验等核心业务规则。
+- 使用 Docker Compose 编排 Flask + MySQL 本地开发环境，支持一条命令启动服务并自动初始化数据库结构、索引、存储过程和种子数据。
 
 ## 更短版本
 
-基于 Flask + MySQL 实现短视频平台数据库系统，设计 9 张业务表并使用外键、唯一约束、CHECK 约束保障数据一致性；将单文件课设重构为 `routes / services / dao` 分层架构，加入角色权限、密码哈希、UUID 主键、存储过程、索引优化和并发压测脚本，并补充服务层单元测试。
+基于 Flask + MySQL 实现短视频平台数据库系统，设计 9 张业务表并使用外键、唯一约束、CHECK 约束保障数据一致性；将单文件课设重构为 `routes / services / dao` 分层架构，加入角色权限、密码哈希、UUID 主键、存储过程、索引优化、并发压测脚本、服务层单元测试和 Docker Compose 一键启动环境。
 
 ## 英文简历版本
 
-Built a Flask + MySQL short video platform database system with normalized schema design, role-based administration, password hashing, stored procedures, composite indexes, concurrent benchmark scripts, and service-layer unit tests.
+Built a Flask + MySQL short video platform database system with normalized schema design, role-based administration, password hashing, stored procedures, composite indexes, concurrent benchmark scripts, service-layer unit tests, and Docker Compose local deployment.
 
 ## 项目关键词
 
-`Python` `Flask` `MySQL` `Jinja2` `数据库设计` `三范式` `外键约束` `索引优化` `存储过程` `权限控制` `密码哈希` `并发压测` `单元测试`
+`Python` `Flask` `MySQL` `Jinja2` `Docker Compose` `数据库设计` `三范式` `外键约束` `索引优化` `存储过程` `权限控制` `密码哈希` `并发压测` `单元测试`

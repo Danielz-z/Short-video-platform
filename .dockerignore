@@ -1,0 +1,16 @@
+.git
+.idea
+.vscode
+__pycache__
+*.py[cod]
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.env
+.envrc
+.venv
+env
+venv
+database/backup/*.sql
+experiments/logs/*.csv
+experiments/analysis/*.png

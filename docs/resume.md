@@ -6,7 +6,7 @@ Short Video Platform Database System
 
 ## One-Line Summary
 
-Built a Flask + MySQL short video platform prototype with normalized relational modeling, role-based administration, stored procedures, indexing, and concurrent database performance experiments.
+Built a Flask + MySQL short video platform prototype with normalized relational modeling, role-based administration, stored procedures, indexing, concurrent database performance experiments, and Docker Compose local deployment.
 
 ## Resume Bullets
 
@@ -17,6 +17,7 @@ Built a Flask + MySQL short video platform prototype with normalized relational 
 - Optimized high-frequency queries with secondary and composite indexes on author, field/category, upload time, popularity, likes, comments, follows, and messages.
 - Built concurrent insert/query benchmark scripts that report QPS, average latency, and P95 latency to compare indexed and non-indexed database performance.
 - Added service-layer unit tests for password policy, role authorization, user creation, and video ownership checks without requiring a live MySQL instance.
+- Added Docker Compose orchestration for one-command Flask + MySQL startup with automatic schema, index, stored procedure, and seed-data initialization.
 
 ## Interview Talking Points
 
@@ -24,3 +25,4 @@ Built a Flask + MySQL short video platform prototype with normalized relational 
 - The strongest backend angle is the migration from a course-style monolithic Flask file to a maintainable layered architecture.
 - The strongest security angle is replacing hard-coded database credentials and plaintext passwords with environment configuration and password hashing.
 - The strongest reliability angle is using UUIDs and unique constraints to avoid ID collisions and duplicate likes under concurrent access.
+- The strongest maintainability angle is making the project reproducible through Docker Compose and automated service-layer tests.

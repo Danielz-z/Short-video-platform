@@ -22,6 +22,7 @@ This project focuses on the database and backend engineering behind a short vide
 | Security | Werkzeug password hashing, environment variables, role-based access control |
 | Testing | unittest, unittest.mock |
 | Experiment | Python threading, CSV logs, pandas, matplotlib |
+| Deployment | Docker, Docker Compose |
 
 ## Engineering Highlights
 
@@ -35,6 +36,7 @@ This project focuses on the database and backend engineering behind a short vide
 | Query optimization | Secondary and composite indexes support author pages, category filtering, timelines, and hot-video rankings |
 | Performance experiments | Insert/query/mixed benchmark scripts report QPS, average latency, and P95 latency |
 | Testability | Service-layer unit tests cover password policy, role authorization, user creation, and ownership checks |
+| One-command startup | Docker Compose starts Flask and MySQL, then initializes schema, indexes, procedures, and seed data |
 
 ## Features
 
@@ -46,6 +48,7 @@ This project focuses on the database and backend engineering behind a short vide
 - MySQL schema, index, procedure, and seed scripts
 - Concurrent insert/query benchmark scripts with QPS, average latency, and P95 latency output
 - Unit tests for password validation, role authorization, and video ownership checks
+- Docker Compose local environment for one-command Flask + MySQL startup
 
 ## Project Diagrams
 
@@ -138,6 +141,44 @@ Benchmark scripts print:
 Logs are written to `experiments/logs`. Charts can be generated with `experiments/analysis/draw_pictures.py`. Markdown summaries can be generated with `experiments/analysis/summarize_logs.py`. See `docs/performance_analysis.md` and `docs/performance_results.md` for the experiment plan and result-recording workflow.
 
 ## Quick Start
+
+### Docker Compose
+
+Start the Flask app and MySQL database:
+
+```bash
+docker compose up --build
+```
+
+Open the app:
+
+```text
+http://localhost:5000
+```
+
+Demo accounts:
+
+| Role | Username | Password |
+| --- | --- | --- |
+| Admin | `admin_demo` | `DemoPass123` |
+| User | `food_creator` | `DemoPass123` |
+| User | `tech_creator` | `DemoPass123` |
+
+The MySQL container initializes the database with:
+
+1. `database/schema.sql`
+2. `database/indexes.sql`
+3. `database/procedures.sql`
+4. `database/seed.sql`
+
+To reset the Docker database volume and re-run initialization:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+### Manual Setup
 
 Install dependencies:
 
