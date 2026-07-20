@@ -4,6 +4,19 @@
 
 An engineering-style Flask + MySQL short video platform database system. This project was upgraded from a database course design into a portfolio-ready backend project with normalized relational modeling, layered Flask architecture, role-based administration, security cleanup, and repeatable database performance experiments.
 
+---
+
+## Highlights
+
+- **Portfolio-ready backend project** upgraded from a database course design into a Flask + MySQL short video platform.
+- **Normalized relational modeling** with 9 business tables, constraints, indexes, and stored procedures.
+- **Layered Flask architecture** (`routes / services / dao`) with MySQL connection pooling.
+- **Security cleanup**: password hashing, UUID primary keys, role-based admin access, and POST-based destructive actions.
+- **Database performance experiments**: before/after index comparisons, with a recorded throughput improvement from **363.63 to 1,390.38 queries/s**.
+- **CI/CD ready**: GitHub Actions + Docker Compose one-command startup.
+
+---
+
 ## Project Value
 
 This project focuses on the database and backend engineering behind a short video platform:
