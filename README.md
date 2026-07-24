@@ -1,5 +1,7 @@
 # Short Video Platform
 
+English | [简体中文][zh-cn]
+
 [![CI](https://github.com/Danielz-z/Short-video-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Danielz-z/Short-video-platform/actions/workflows/ci.yml)
 
 An engineering-style Flask + MySQL short video platform database system. This project was upgraded from a database course design into a portfolio-ready backend project with normalized relational modeling, layered Flask architecture, role-based administration, security cleanup, and repeatable database performance experiments.
@@ -277,3 +279,5 @@ OK
 - Store database credentials in environment variables only.
 - Admin permissions are checked through the `users.role` column instead of username conventions.
 - Replace demo seed passwords before using seed accounts in a real environment.
+
+[zh-cn]: README.zh-CN.md
