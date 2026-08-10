@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 from datetime import datetime
 from math import ceil
@@ -12,6 +13,18 @@ from services import user_service
 from utils.db import get_db_connection
 
 PAGE_SIZE = 10
+BACKUP_FILENAME_PATTERN = re.compile(r"backup_[0-9]{8}_[0-9]{6}\.sql")
+
+
+def _resolve_backup_file(filename):
+    if not isinstance(filename, str) or not BACKUP_FILENAME_PATTERN.fullmatch(filename):
+        raise ValueError("Invalid backup selection")
+
+    backup_dir = BACKUP_DIR.resolve()
+    candidate = (backup_dir / filename).resolve()
+    if candidate.parent != backup_dir or not candidate.is_file():
+        raise ValueError("Invalid backup selection")
+    return candidate
 
 
 def _require_admin():
@@ -173,7 +186,6 @@ def register_admin_routes(app):
         if not _require_admin():
             return redirect(url_for("login"))
 
-        sql_file = BACKUP_DIR / os.path.basename(request.form.get("filename", ""))
         command = [
             "mysql",
             "-h",
@@ -186,6 +198,7 @@ def register_admin_routes(app):
         env["MYSQL_PWD"] = DB_CONFIG["password"]
 
         try:
+            sql_file = _resolve_backup_file(request.form.get("filename", ""))
             with sql_file.open("r", encoding="utf-8") as file:
                 subprocess.run(command, stdin=file, check=True, env=env)
             flash("Restore completed", "success")
