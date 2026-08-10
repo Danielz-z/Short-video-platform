@@ -1,3 +1,4 @@
+import ast
 import sys
 import tempfile
 import unittest
@@ -11,6 +12,25 @@ from routes import admin  # noqa: E402
 
 
 class AdminSecurityTest(unittest.TestCase):
+    def test_flask_entry_point_does_not_enable_debug(self):
+        app_path = Path(__file__).resolve().parents[1] / "backend" / "app.py"
+        tree = ast.parse(app_path.read_text(encoding="utf-8"))
+        run_calls = [
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and isinstance(node.func.value, ast.Name)
+            and node.func.value.id == "app"
+            and node.func.attr == "run"
+        ]
+
+        self.assertEqual(len(run_calls), 1)
+        debug_keywords = [keyword for keyword in run_calls[0].keywords if keyword.arg == "debug"]
+        if debug_keywords:
+            self.assertIsInstance(debug_keywords[0].value, ast.Constant)
+            self.assertIs(debug_keywords[0].value.value, False)
+
     def test_resolve_backup_file_accepts_generated_existing_file(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             backup_dir = Path(temp_dir)
