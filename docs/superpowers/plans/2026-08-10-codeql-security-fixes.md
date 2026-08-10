@@ -38,7 +38,7 @@ Expected: FAIL because `_resolve_backup_file` does not exist.
 
 - [ ] **Step 3: Implement the minimal resolver and route integration**
 
-Use a full-match regular expression for `backup_[0-9]{8}_[0-9]{6}.sql`, resolve both the configured directory and candidate, require `candidate.parent == backup_dir`, and require `candidate.is_file()`. In the restore route, resolve the submitted filename before opening it; catch `ValueError` with the existing restore failure handling.
+Use a full-match regular expression for `backup_[0-9]{8}_[0-9]{6}.sql`. Enumerate `BACKUP_DIR` on the server and select a direct child whose name matches the validated selection; reject symbolic links and require `candidate.is_file()`. In the restore route, obtain the submitted filename through this resolver before opening it; catch `ValueError` with the existing restore failure handling.
 
 - [ ] **Step 4: Verify the focused tests pass**
 

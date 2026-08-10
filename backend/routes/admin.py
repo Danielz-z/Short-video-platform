@@ -20,11 +20,15 @@ def _resolve_backup_file(filename):
     if not isinstance(filename, str) or not BACKUP_FILENAME_PATTERN.fullmatch(filename):
         raise ValueError("Invalid backup selection")
 
-    backup_dir = BACKUP_DIR.resolve()
-    candidate = (backup_dir / filename).resolve()
-    if candidate.parent != backup_dir or not candidate.is_file():
-        raise ValueError("Invalid backup selection")
-    return candidate
+    for candidate in BACKUP_DIR.iterdir():
+        if (
+            candidate.name == filename
+            and BACKUP_FILENAME_PATTERN.fullmatch(candidate.name)
+            and not candidate.is_symlink()
+            and candidate.is_file()
+        ):
+            return candidate
+    raise ValueError("Invalid backup selection")
 
 
 def _require_admin():

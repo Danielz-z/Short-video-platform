@@ -40,7 +40,7 @@ class AdminSecurityTest(unittest.TestCase):
             with patch.object(admin, "BACKUP_DIR", backup_dir):
                 resolved = admin._resolve_backup_file(backup_file.name)
 
-            self.assertEqual(resolved, backup_file.resolve())
+            self.assertEqual(resolved, backup_file)
 
     def test_resolve_backup_file_rejects_untrusted_names(self):
         invalid_names = (
@@ -62,6 +62,18 @@ class AdminSecurityTest(unittest.TestCase):
             with patch.object(admin, "BACKUP_DIR", Path(temp_dir)):
                 with self.assertRaises(ValueError):
                     admin._resolve_backup_file("backup_20260810_120000.sql")
+
+    def test_resolve_backup_file_rejects_symlink(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            backup_dir = Path(temp_dir)
+            target = backup_dir / "target.sql"
+            target.write_text("SELECT 1;", encoding="utf-8")
+            symlink = backup_dir / "backup_20260810_120000.sql"
+            symlink.symlink_to(target)
+
+            with patch.object(admin, "BACKUP_DIR", backup_dir):
+                with self.assertRaises(ValueError):
+                    admin._resolve_backup_file(symlink.name)
 
     def test_resolve_backup_file_rejects_directory(self):
         with tempfile.TemporaryDirectory() as temp_dir:
