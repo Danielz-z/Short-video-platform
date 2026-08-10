@@ -83,3 +83,5 @@ experiments/analysis/*.png
 .DS_Store
 Thumbs.db
 
+# Local Git worktrees
+.worktrees/
